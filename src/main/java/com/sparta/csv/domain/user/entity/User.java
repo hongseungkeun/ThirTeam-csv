@@ -1,7 +1,11 @@
 package com.sparta.csv.domain.user.entity;
 
+import com.sparta.csv.domain.user.enums.UserRole;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,19 +26,23 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
 
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String nickName;
 
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String email;
 
 	@Column(nullable = false)
 	private String password;
 
+	@Enumerated(EnumType.STRING)
+	private UserRole userRole;
+
 	@Builder
-	public User(String nickName, String email, String password){
+	public User(String nickName, String email, String password, UserRole userRole){
 		this.nickName=nickName;
 		this.email=email;
 		this.password=password;
+		this.userRole=userRole;
 	}
 }
