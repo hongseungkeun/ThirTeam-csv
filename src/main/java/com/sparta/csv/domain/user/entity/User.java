@@ -1,5 +1,7 @@
 package com.sparta.csv.domain.user.entity;
 
+import java.util.function.Consumer;
+
 import com.sparta.csv.domain.user.enums.UserRole;
 
 import jakarta.persistence.Column;
@@ -43,5 +45,9 @@ public class User {
 		this.email=email;
 		this.password=password;
 		this.userRole=userRole;
+	}
+
+	public void updateNickName(String newNickName){
+		if(!newNickName.isBlank()) this.nickName=newNickName;
 	}
 }
