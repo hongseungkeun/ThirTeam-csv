@@ -4,10 +4,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sparta.csv.domain.user.dto.request.UserInfoRequest;
 import com.sparta.csv.domain.user.dto.response.UserInfoResponse;
 import com.sparta.csv.domain.user.service.UserService;
 
@@ -30,5 +33,14 @@ public class UserController {
 	public ResponseEntity<Void> deleteUser(@PathVariable Long userId){
 		userService.deleteUser(userId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	@PatchMapping("/{userId}")
+	public ResponseEntity<Void> updateUserInfo(
+		@PathVariable Long userId,
+		@RequestBody UserInfoRequest userInfoRequest
+	){
+		userService.updateUserById(userId, userInfoRequest);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
