@@ -23,4 +23,12 @@ public class UserService {
 
 		return UserInfoResponse.from(user);
 	}
+
+	public void deleteUser(Long userId) {
+		User user = userRepository.findById(userId).orElseThrow(
+			() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "조회되는 회원 정보가 없습니다. id: "+userId)
+		);
+
+		userRepository.delete(user);
+	}
 }
