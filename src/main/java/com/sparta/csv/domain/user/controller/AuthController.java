@@ -22,10 +22,9 @@ public class AuthController {
 
 	/* TODO Valid 관련 예외처리 추가 */
 	@PostMapping("/signup")
-	public ResponseEntity<Void> signup(@Valid @RequestBody SignupRequest signupRequest){
+	public ResponseEntity<Void> signup(@Valid @RequestBody SignupRequest signupRequest) {
 		authService.signup(signupRequest);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
-
 
 }
