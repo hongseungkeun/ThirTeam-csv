@@ -7,6 +7,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.List;
 @Table(name = "bookings")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicInsert
 public class Booking {
 
     @Id
@@ -23,6 +26,8 @@ public class Booking {
     private Long id;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'COMPLETE'")
     private BookingStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,4 +1,4 @@
-package com.sparta.csv.config;
+package com.sparta.csv.global.config;
 
 import java.rmi.ServerException;
 import java.security.Key;

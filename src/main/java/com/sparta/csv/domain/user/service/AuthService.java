@@ -5,9 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.sparta.csv.config.BCrypUtil;
-import com.sparta.csv.config.JwtUtil;
 import com.sparta.csv.domain.user.dto.request.SigninRequest;
+import com.sparta.csv.global.config.BCrypUtil;
+import com.sparta.csv.global.config.JwtUtil;
 import com.sparta.csv.domain.user.dto.request.SignupRequest;
 import com.sparta.csv.domain.user.dto.response.SigninResponse;
 import com.sparta.csv.domain.user.entity.User;

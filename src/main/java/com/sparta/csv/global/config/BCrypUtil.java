@@ -1,4 +1,4 @@
-package com.sparta.csv.config;
+package com.sparta.csv.global.config;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
