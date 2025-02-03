@@ -1,16 +1,16 @@
 package com.sparta.csv.domain.movie.entity;
 
+import com.sparta.csv.domain.movie.dto.request.CreateMovieRequest;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Getter
 @Table(name="movies")
 @Entity
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Movie {
     @Id
@@ -29,11 +29,13 @@ public class Movie {
     @Column(nullable = false)
     private String description;
 
-    @Builder
-    public Movie(String title, Integer runTime, LocalDate release_date, String description){
-        this.title=title;
-        this.runTime=runTime;
-        this.release_date=release_date;
-        this.description=description;
+
+    public static Movie newMovie(CreateMovieRequest req){
+        return Movie.builder()
+                .title(req.title())
+                .runTime(req.runTime())
+                .release_date(req.release_date())
+                .description(req.description())
+                .build();
     }
 }
