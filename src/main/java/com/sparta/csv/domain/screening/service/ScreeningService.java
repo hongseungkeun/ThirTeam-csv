@@ -11,6 +11,9 @@ import com.sparta.csv.domain.theater.repository.TheaterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import static com.sparta.csv.domain.screening.entity.Screening.newScreening;
 
 @Service
@@ -28,5 +31,13 @@ public class ScreeningService {
         Screening saved = screeningRepository.save(screening);
 
         return ScreeningResponse.from(saved);
+    }
+
+    public List<ScreeningResponse> findAllByDateScreenings(LocalDate date) {
+        List<Screening> screenings = screeningRepository.findAllByDateScreenings(date);
+
+        return screenings.stream()
+                .map(ScreeningResponse::from)
+                .toList();
     }
 }

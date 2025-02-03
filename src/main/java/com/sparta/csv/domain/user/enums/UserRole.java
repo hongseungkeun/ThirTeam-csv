@@ -1,9 +1,9 @@
 package com.sparta.csv.domain.user.enums;
 
-import java.util.Arrays;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Arrays;
 
 @Getter
 @RequiredArgsConstructor
