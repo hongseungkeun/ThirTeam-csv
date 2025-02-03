@@ -35,10 +35,9 @@ public class SecurityConfig {
 			.addFilterBefore(jwtFilter, SecurityContextHolderAwareRequestFilter.class)
 			.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/api/auth/**").permitAll()
-				.requestMatchers("/api/admin/**","/api/movies/info").hasRole("ADMIN")
-				.requestMatchers("/api/users/**", "/api/movies").hasRole("USER")
+				.requestMatchers("/api/admin/**").hasRole("ADMIN")
+				.requestMatchers("/api/users/**", "/api/movies/**").hasRole("USER")
 				.anyRequest().authenticated()
-				// 기타 권한 검증이 필요한 Controller에 @AuthCheck("USER") 형식으로 어노테이션 붙여서 사용
 			)
 			.build();
 	}
