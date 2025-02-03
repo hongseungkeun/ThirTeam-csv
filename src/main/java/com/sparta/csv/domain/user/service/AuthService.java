@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthService {
 
 	private final UserRepository userRepository;
+	private final UserService userService;
 	private final JwtUtil jwtUtil;
 
 	@Transactional
@@ -41,7 +42,7 @@ public class AuthService {
 	}
 
 	public SigninResponse signin(@Valid SigninRequest signinRequest) {
-		User user = findUserByEmail(signinRequest);
+		User user = userService.findUserByEmail(signinRequest);
 
 		if (!BCrypUtil.matches(signinRequest.password(), user.getPassword())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 비밀번호입니다.");
@@ -50,13 +51,6 @@ public class AuthService {
 		String bearerToken = createBearerToken(user);
 
 		return SigninResponse.from(bearerToken);
-	}
-
-	private User findUserByEmail(SigninRequest signinRequest) {
-		User user = userRepository.findByEmail(signinRequest.email()).orElseThrow(
-			() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "가입되지 않은 유저입니다.")
-		);
-		return user;
 	}
 
 	private String createBearerToken(User user) {
