@@ -7,7 +7,7 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Getter
-@Table(name="movies")
+@Table(name = "movies")
 @Entity
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -31,7 +31,7 @@ public class Movie {
     private String description;
 
 
-    public static Movie newMovie(CreateMovieRequest req){
+    public static Movie newMovie(CreateMovieRequest req) {
         return Movie.builder()
                 .title(req.title())
                 .runTime(req.runTime())
