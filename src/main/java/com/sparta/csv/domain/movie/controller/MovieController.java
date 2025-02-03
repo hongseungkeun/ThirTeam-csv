@@ -3,11 +3,9 @@ package com.sparta.csv.domain.movie.controller;
 import com.sparta.csv.domain.movie.dto.request.CreateMovieRequest;
 import com.sparta.csv.domain.movie.dto.response.MovieResponse;
 import com.sparta.csv.domain.movie.service.MovieService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
