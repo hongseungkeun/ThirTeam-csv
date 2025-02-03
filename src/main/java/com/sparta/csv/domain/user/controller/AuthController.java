@@ -20,6 +20,7 @@ public class AuthController {
 
 	private final AuthService authService;
 
+	/* TODO Valid 관련 예외처리 추가 */
 	@PostMapping("/signup")
 	public ResponseEntity<Void> signup(@Valid @RequestBody SignupRequest signupRequest){
 		authService.signup(signupRequest);
