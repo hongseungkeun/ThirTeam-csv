@@ -8,7 +8,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Getter
-@Table(name="screenings")
+@Table(name = "screenings")
 @Entity
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -30,7 +30,7 @@ public class Screening {
     @Column(nullable = false)
     private LocalDateTime showTime;
 
-    public static Screening newScreening(Movie movie, Theater theater, LocalDateTime showTime){
+    public static Screening newScreening(Movie movie, Theater theater, LocalDateTime showTime) {
         return Screening.builder()
                 .movie(movie)
                 .theater(theater)
