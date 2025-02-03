@@ -11,13 +11,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Table(name="users")
+@Table(name = "users")
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
@@ -39,10 +38,10 @@ public class User {
 	private UserRole userRole;
 
 	@Builder
-	public User(String nickName, String email, String password, UserRole userRole){
-		this.nickName=nickName;
-		this.email=email;
-		this.password=password;
-		this.userRole=userRole;
+	public User(String nickName, String email, String password, UserRole userRole) {
+		this.nickName = nickName;
+		this.email = email;
+		this.password = password;
+		this.userRole = userRole;
 	}
 }
