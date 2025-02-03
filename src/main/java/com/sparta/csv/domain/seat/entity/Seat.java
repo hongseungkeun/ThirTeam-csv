@@ -3,14 +3,13 @@ package com.sparta.csv.domain.seat.entity;
 import com.sparta.csv.domain.theater.entity.Theater;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Entity
 @Table(name = "seats")
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Seat {
 
@@ -29,10 +28,11 @@ public class Seat {
     @Column(nullable = false)
     private Integer seatPrice;
 
-    @Builder
-    public Seat(Theater theater, String seatNumber, Integer seatPrice){
-        this.theater = theater;
-        this.seatNumber = seatNumber;
-        this.seatPrice = seatPrice;
+    public static Seat newSeat(Theater theater, String seatNumber, Integer seatPrice){
+        return Seat.builder()
+                .theater(theater)
+                .seatNumber(seatNumber)
+                .seatPrice(seatPrice)
+                .build();
     }
 }
