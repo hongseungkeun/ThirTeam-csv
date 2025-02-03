@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sparta.csv.domain.user.dto.request.SigninRequest;
 import com.sparta.csv.domain.user.dto.request.SignupRequest;
+import com.sparta.csv.domain.user.dto.response.SigninResponse;
 import com.sparta.csv.domain.user.service.AuthService;
 
 import jakarta.validation.Valid;
@@ -27,4 +29,9 @@ public class AuthController {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
+	@PostMapping("/signin")
+	public ResponseEntity<SigninResponse> signin(@Valid @RequestBody SigninRequest signinRequest) {
+		SigninResponse signinResponse = authService.signin(signinRequest);
+		return new ResponseEntity<>(signinResponse, HttpStatus.OK);
+	}
 }
