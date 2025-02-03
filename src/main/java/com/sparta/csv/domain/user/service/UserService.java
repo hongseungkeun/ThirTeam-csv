@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
 
-	private static final UserRepository userRepository;
+	private final UserRepository userRepository;
 
 	public UserInfoResponse getUser(Long userId) {
 		User user = findUserById(userId);
@@ -30,7 +30,7 @@ public class UserService {
 		return user;
 	}
 
-	User findUserByEmail(SigninRequest signinRequest) {
+	private User findUserByEmail(SigninRequest signinRequest) {
 		User user = userRepository.findByEmail(signinRequest.email()).orElseThrow(
 			() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "가입되지 않은 유저입니다.")
 		);
