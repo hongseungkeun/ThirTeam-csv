@@ -26,4 +26,9 @@ public class MovieService {
         Page<Movie> movies = movieRepository.findAllByTitle(title, pageable);
         return movies.map(MovieResponse::from);
     }
+
+    public MovieResponse findMovieById(Long id) {
+        Movie movie = movieRepository.findById(id).orElseThrow();//TODO: 예외처리 정해야댐!
+        return MovieResponse.from(movie);
+    }
 }

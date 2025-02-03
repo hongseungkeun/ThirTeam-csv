@@ -27,4 +27,9 @@ public class MovieController {
         return ResponseEntity.ok(movieService.findAllMovies(title,pageable));
     }
 
+    @GetMapping("/movies/{movieId}")
+    public ResponseEntity<MovieResponse> findMovieById(@PathVariable Long movieId) {
+        return ResponseEntity.ok(movieService.findMovieById(movieId));
+    }
+
 }
