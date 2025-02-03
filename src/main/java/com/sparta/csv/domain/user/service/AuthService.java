@@ -6,13 +6,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.sparta.csv.domain.user.dto.request.SigninRequest;
+import com.sparta.csv.global.config.BCrypUtil;
+import com.sparta.csv.global.config.JwtUtil;
 import com.sparta.csv.domain.user.dto.request.SignupRequest;
 import com.sparta.csv.domain.user.dto.response.SigninResponse;
 import com.sparta.csv.domain.user.entity.User;
 import com.sparta.csv.domain.user.enums.UserRole;
 import com.sparta.csv.domain.user.repository.UserRepository;
 
-import jakarta.security.auth.message.AuthException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -40,9 +41,7 @@ public class AuthService {
 	}
 
 	public SigninResponse signin(@Valid SigninRequest signinRequest) {
-		User user = userRepository.findByEmail(signinRequest.email()).orElseThrow(
-			() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "가입되지 않은 유저입니다.")
-		);
+		User user = findUserByEmail(signinRequest);
 
 		if (!BCrypUtil.matches(signinRequest.password(), user.getPassword())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 비밀번호입니다.");
@@ -51,6 +50,13 @@ public class AuthService {
 		String bearerToken = createBearerToken(user);
 
 		return SigninResponse.from(bearerToken);
+	}
+
+	private User findUserByEmail(SigninRequest signinRequest) {
+		User user = userRepository.findByEmail(signinRequest.email()).orElseThrow(
+			() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "가입되지 않은 유저입니다.")
+		);
+		return user;
 	}
 
 	private String createBearerToken(User user) {
