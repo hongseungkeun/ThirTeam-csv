@@ -17,10 +17,15 @@ public class UserService {
 	private final UserRepository userRepository;
 
 	public UserInfoResponse getUser(Long userId) {
-		User user=userRepository.findById(userId).orElseThrow(
-			() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "조회되는 회원 정보가 없습니다. id: "+userId)
-		);
+		User user = findUserById(userId);
 
 		return UserInfoResponse.from(user);
+	}
+
+	private User findUserById(Long userId) {
+		User user=userRepository.findById(userId).orElseThrow(
+			() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "조회되는 회원 정보가 없습니다. id: "+ userId)
+		);
+		return user;
 	}
 }
