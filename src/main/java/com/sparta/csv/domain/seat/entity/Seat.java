@@ -1,38 +1,55 @@
 package com.sparta.csv.domain.seat.entity;
 
+import com.sparta.csv.domain.booking.entity.BookedSeat;
 import com.sparta.csv.domain.theater.entity.Theater;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-@Getter
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "seats")
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Seat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long seatId;
+    @Column(name = "seat_id")
+    private Long id;
+
+    @Column(nullable = false, length = 10)
+    private String number;
+
+    @Column(nullable = false)
+    private Integer price;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "theater_id", nullable = false)
+    @JoinColumn(name = "theater_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Theater theater;
 
-    @Column(nullable = false)
-    @Size(max = 10)
-    private String seatNumber;
+    @OneToMany(mappedBy = "seat")
+    private List<BookedSeat> bookedSeats = new ArrayList<>();
 
-    @Column(nullable = false)
-    private Integer seatPrice;
-
-    public static Seat newSeat(Theater theater, String seatNumber, Integer seatPrice){
-        return Seat.builder()
-                .theater(theater)
-                .seatNumber(seatNumber)
-                .seatPrice(seatPrice)
-                .build();
+    @Builder
+    public Seat(
+            Long id,
+            String number,
+            Integer price,
+            Theater theater,
+            List<BookedSeat> bookedSeats
+    ) {
+        this.id = id;
+        this.number = number;
+        this.price = price;
+        this.theater = theater;
+        this.bookedSeats = bookedSeats;
     }
 }
