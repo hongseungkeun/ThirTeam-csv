@@ -2,6 +2,7 @@ package com.sparta.csv.domain.screening.service;
 
 import com.sparta.csv.domain.movie.entity.Movie;
 import com.sparta.csv.domain.movie.repository.MovieRepository;
+import com.sparta.csv.domain.movie.service.MovieService;
 import com.sparta.csv.domain.screening.dto.request.CreateScreeningRequest;
 import com.sparta.csv.domain.screening.dto.response.ScreeningResponse;
 import com.sparta.csv.domain.screening.entity.Screening;
@@ -20,11 +21,11 @@ import static com.sparta.csv.domain.screening.entity.Screening.newScreening;
 @RequiredArgsConstructor
 public class ScreeningService {
     private final ScreeningRepository screeningRepository;
-    private final MovieRepository movieRepository;
     private final TheaterRepository theaterRepository;
+    private final MovieService movieService;
 
     public ScreeningResponse createScreening(Long movieId, CreateScreeningRequest req) {
-        Movie movie = movieRepository.findById(movieId).orElseThrow();
+        Movie movie = movieService.getMovieById(movieId);
         Theater theater = theaterRepository.findById(req.theaterId()).orElseThrow();
 
         Screening screening = newScreening(movie, theater, req.screeningTime());
