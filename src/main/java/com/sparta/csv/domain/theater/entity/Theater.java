@@ -1,28 +1,27 @@
 package com.sparta.csv.domain.theater.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @Entity
-@Table(name="theaters")
+@Table(name = "theaters")
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Theater {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long theaterId;
+    @Column(name = "theater_id")
+    private Long id;
 
-    @Column(nullable = false)
-    @Size(max = 10)
-    private String theaterName;
+    @Column(nullable = false, length = 10)
+    private String name;
 
     @Builder
-    public Theater(String theaterName){
-        this.theaterName = theaterName;
+    public Theater(String name) {
+        this.name = name;
     }
 }
