@@ -50,4 +50,8 @@ public class User {
 	public void updateNickName(String newNickName){
 		if(!newNickName.isBlank()) this.nickName=newNickName;
 	}
+
+	public void updatePassword(String newPassword){
+		if(!newPassword.isBlank()) this.password=newPassword;
+	}
 }
