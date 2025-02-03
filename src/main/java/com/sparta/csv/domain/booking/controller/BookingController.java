@@ -30,4 +30,14 @@ public class BookingController {
 
         return ResponseEntity.created(uri).build();
     }
+
+    @DeleteMapping("/bookings/{bookingId}")
+    public ResponseEntity<Void> deleteBooking(
+            Long userId,
+            @PathVariable Long bookingId
+    ) {
+        bookingService.cancellation(userId, bookingId);
+
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -1,5 +1,7 @@
 package com.sparta.csv.domain.user.service;
 
+import com.sparta.csv.global.exception.ForbiddenException;
+import com.sparta.csv.global.exception.error.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -35,5 +37,11 @@ public class UserService {
 			() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "가입되지 않은 유저입니다.")
 		);
 		return user;
+	}
+
+	public void checkUserAuthentication(Long userId, Long loginUserId) {
+		if (userId.equals(loginUserId)) {
+			throw new ForbiddenException(ErrorCode.FORBIDDEN_USER_ACCESS);
+		}
 	}
 }

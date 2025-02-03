@@ -10,6 +10,8 @@ import com.sparta.csv.domain.seat.entity.Seat;
 import com.sparta.csv.domain.seat.service.SeatService;
 import com.sparta.csv.domain.user.entity.User;
 import com.sparta.csv.domain.user.service.UserService;
+import com.sparta.csv.global.exception.NotFoundException;
+import com.sparta.csv.global.exception.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,5 +55,23 @@ public class BookingService {
 
         Booking savedBooking = bookingRepository.save(booking);
         return savedBooking.getId();
+    }
+
+    public void cancellation(Long userId, Long bookingId) {
+        Booking booking = findBookingByIdAndStatusIsCompleted(bookingId);
+
+        userService.checkUserAuthentication(booking.getUser().getUserId(), userId);
+
+        booking.cancel();
+    }
+
+    public Booking findBookingById(Long bookingId) {
+        return bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.BOOKING_NOT_FOUND));
+    }
+
+    private Booking findBookingByIdAndStatusIsCompleted(Long bookingId) {
+        return bookingRepository.findByIdAndStatusIsCompleted(bookingId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.BOOKING_NOT_AVAILABLE));
     }
 }
