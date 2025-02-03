@@ -17,12 +17,11 @@ public class Theater {
     @Column(name = "theater_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10)
     private String name;
 
     @Builder
-    public Theater(Long id, String name) {
-        this.id = id;
+    public Theater(String name) {
         this.name = name;
     }
 }

@@ -24,8 +24,8 @@ public class Seat {
     @Column(name = "seat_id")
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(nullable = false, length = 10)
+    private String number;
 
     @Column(nullable = false)
     private Integer price;
@@ -35,19 +35,19 @@ public class Seat {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Theater theater;
 
-    @OneToMany(mappedBy = "seat", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "seat")
     private List<BookedSeat> bookedSeats = new ArrayList<>();
 
     @Builder
     public Seat(
             Long id,
-            String name,
+            String number,
             Integer price,
             Theater theater,
             List<BookedSeat> bookedSeats
     ) {
         this.id = id;
-        this.name = name;
+        this.number = number;
         this.price = price;
         this.theater = theater;
         this.bookedSeats = bookedSeats;
