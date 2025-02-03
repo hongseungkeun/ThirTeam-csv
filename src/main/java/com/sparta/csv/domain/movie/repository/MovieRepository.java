@@ -1,6 +1,5 @@
 package com.sparta.csv.domain.movie.repository;
 
-import com.sparta.csv.domain.movie.dto.response.MovieResponse;
 import com.sparta.csv.domain.movie.entity.Movie;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
