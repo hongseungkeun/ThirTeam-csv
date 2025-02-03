@@ -2,14 +2,13 @@ package com.sparta.csv.domain.theater.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Entity
 @Table(name="theaters")
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Theater {
 
@@ -21,8 +20,9 @@ public class Theater {
     @Size(max = 10)
     private String theaterName;
 
-    @Builder
-    public Theater(String theaterName){
-        this.theaterName = theaterName;
+    public static Theater newTheater(String theaterName){
+        return Theater.builder()
+                .theaterName(theaterName)
+                .build();
     }
 }
