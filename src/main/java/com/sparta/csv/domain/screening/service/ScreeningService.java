@@ -40,4 +40,8 @@ public class ScreeningService {
                 .map(ScreeningResponse::from)
                 .toList();
     }
+
+    public Screening findScreeningById(Long id) {
+        return screeningRepository.findById(id).orElseThrow();
+    }
 }
