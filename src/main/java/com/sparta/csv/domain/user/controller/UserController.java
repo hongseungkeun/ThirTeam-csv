@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sparta.csv.domain.user.dto.request.UserInfoRequest;
+import com.sparta.csv.domain.user.dto.request.UserPasswordRequest;
 import com.sparta.csv.domain.user.dto.response.UserInfoResponse;
 import com.sparta.csv.domain.user.service.UserService;
 
@@ -41,6 +42,15 @@ public class UserController {
 		@RequestBody UserInfoRequest userInfoRequest
 	){
 		userService.updateUserById(userId, userInfoRequest);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@PatchMapping("/{userId}/password")
+	public ResponseEntity<Void> updateUserPassword(
+		@PathVariable Long userId,
+		@RequestBody UserPasswordRequest userPasswordRequest
+	){
+		userService.updateUserPasswordById(userId, userPasswordRequest);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
