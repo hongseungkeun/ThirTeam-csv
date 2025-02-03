@@ -6,6 +6,7 @@ import com.sparta.csv.domain.movie.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +18,15 @@ public class MovieController {
 
     @PostMapping("/admin/movies")
     public ResponseEntity<MovieResponse> createMovie(@RequestBody CreateMovieRequest req) {
-        return ResponseEntity.ok(movieService.createMovie(req));
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(movieService.createMovie(req));
     }
 
     @GetMapping("/movies")
-    public ResponseEntity<Page<MovieResponse>> findAllMovies(@RequestParam(required = false) String title, Pageable pageable) {
-        return ResponseEntity.ok(movieService.findAllMovies(title,pageable));
+    public ResponseEntity<Page<MovieResponse>> findAllMovies(@RequestParam(required = false) String title,
+                                                             Pageable pageable) {
+        return ResponseEntity.ok(movieService.findAllMovies(title, pageable));
     }
 
     @GetMapping("/movies/{movieId}")
