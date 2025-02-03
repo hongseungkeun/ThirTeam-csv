@@ -29,6 +29,7 @@ public class BookingService {
     private final BookedSeatService bookedSeatService;
     private final BookingRepository bookingRepository;
 
+    @Transactional
     public Long registration(Long userId, Long screeningId, BookingCreateRequest request) {
         User user = userService.findUserById(userId);
         Screening screening = screeningService.findScreeningById(screeningId);
@@ -57,6 +58,7 @@ public class BookingService {
         return savedBooking.getId();
     }
 
+    @Transactional
     public void cancellation(Long userId, Long bookingId) {
         Booking booking = findBookingByIdAndStatusIsCompleted(bookingId);
 
