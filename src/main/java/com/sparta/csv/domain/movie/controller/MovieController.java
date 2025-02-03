@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/movies")
+@RequestMapping("/api")
 public class MovieController {
     private final MovieService movieService;
 
-    @PostMapping
+    @PostMapping("/admin/movies")
     public ResponseEntity<MovieResponse> createMovie(@RequestBody CreateMovieRequest req) {
         return ResponseEntity.ok(movieService.createMovie(req));
     }
