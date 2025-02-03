@@ -1,4 +1,4 @@
-package com.sparta.csv.config;
+package com.sparta.csv.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

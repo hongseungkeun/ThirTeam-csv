@@ -11,12 +11,12 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class BookedSeatId implements Serializable {
 
-    private Long bookId;
+    private Long bookingId;
     private Long seatId;
 
     @Builder
-    public BookedSeatId(Long bookId, Long seatId) {
-        this.bookId = bookId;
+    public BookedSeatId(Long bookingId, Long seatId) {
+        this.bookingId = bookingId;
         this.seatId = seatId;
     }
 }
