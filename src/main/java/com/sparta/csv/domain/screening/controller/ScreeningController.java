@@ -1,5 +1,6 @@
 package com.sparta.csv.domain.screening.controller;
 
+import com.sparta.csv.domain.screening.dto.request.CreateScreeningRequest;
 import com.sparta.csv.domain.screening.dto.response.ScreeningResponse;
 import com.sparta.csv.domain.screening.service.ScreeningService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ public class ScreeningController {
     private final ScreeningService screeningService;
 
     @PostMapping("/admin/movies/{movieId}/screening")
-    public ResponseEntity<ScreeningResponse> createScreening(@PathVariable Long movieId) {
-        return ResponseEntity.ok(screeningService.createScreening(movieId));
+    public ResponseEntity<ScreeningResponse> createScreening(@PathVariable Long movieId, @RequestBody CreateScreeningRequest req) {
+        return ResponseEntity.ok(screeningService.createScreening(movieId, req));
     }
 }
