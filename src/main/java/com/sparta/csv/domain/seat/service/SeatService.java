@@ -2,6 +2,8 @@ package com.sparta.csv.domain.seat.service;
 
 import com.sparta.csv.domain.seat.entity.Seat;
 import com.sparta.csv.domain.seat.repository.SeatRepository;
+import com.sparta.csv.global.exception.NotFoundException;
+import com.sparta.csv.global.exception.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,6 @@ public class SeatService {
 
     public Seat findSeatById(Long seatId) {
         return seatRepository.findById(seatId)
-                .orElseThrow(() -> new );
+                .orElseThrow(() -> new NotFoundException(ErrorCode.SEAT_NOT_FOUND));
     }
 }
