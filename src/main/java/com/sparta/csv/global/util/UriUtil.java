@@ -16,4 +16,10 @@ public class UriUtil {
                 .buildAndExpand(id)
                 .toUri();
     }
+
+    public static URI createUri(String path) {
+        return UriComponentsBuilder.fromPath(path)
+            .build(true)
+            .toUri();
+    }
 }
