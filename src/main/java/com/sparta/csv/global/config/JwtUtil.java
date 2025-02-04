@@ -1,6 +1,7 @@
 package com.sparta.csv.global.config;
 
-import java.rmi.ServerException;
+import static com.sparta.csv.global.exception.error.ErrorCode.*;
+
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import com.sparta.csv.domain.user.enums.UserRole;
+import com.sparta.csv.global.exception.UnauthorizedException;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -55,7 +57,7 @@ public class JwtUtil {
 		if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
 			return tokenValue.substring(7);
 		}
-		throw new RuntimeException("Not Found Token"); /* TODO 상의 후 구체적인 예외처리 추가 */
+		throw new UnauthorizedException(TOKEN_NOT_FOUND);
 	}
 
 	public Claims extractClaims(String token) {

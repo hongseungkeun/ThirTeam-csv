@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -36,8 +37,18 @@ public class SecurityConfig {
 			.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/api/auth/**").permitAll()
 				.requestMatchers("/api/admin/**").hasRole("ADMIN")
-				.requestMatchers("/api/users/**", "/api/movies/**").hasRole("USER")
+				.requestMatchers("/api/users/**", "/api/movies/**", "/api/movies").hasRole("USER")
 				.anyRequest().authenticated()
+			)
+			.exceptionHandling(exception -> exception
+				.accessDeniedHandler((request, response, accessDeniedException) -> {
+					response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+					response.getWriter().write("{\"error\": \"Access Denied\"}");
+				})
+				.authenticationEntryPoint((request, response, authException) -> {
+					response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+					response.getWriter().write("{\"error\": \"Unauthorized\"}");
+				})
 			)
 			.build();
 	}

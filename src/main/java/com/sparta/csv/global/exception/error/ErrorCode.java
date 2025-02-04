@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     // 유저 관련 익셉션
+    TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED,"Token Not Found"),
     FORBIDDEN_USER_ACCESS(HttpStatus.FORBIDDEN, "사용자의 리소스에 접근할 권한이 없습니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "조회되는 회원 정보가 없습니다."),
     UNAUTHORIZED_USER(HttpStatus.UNAUTHORIZED,"가입되지 않은 회원입니다."),
