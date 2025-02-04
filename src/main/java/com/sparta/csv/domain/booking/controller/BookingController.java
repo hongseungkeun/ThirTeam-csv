@@ -2,12 +2,13 @@ package com.sparta.csv.domain.booking.controller;
 
 import com.sparta.csv.domain.booking.dto.request.BookingCreateRequest;
 import com.sparta.csv.domain.booking.service.BookingService;
+import com.sparta.csv.domain.user.entity.User;
 import com.sparta.csv.global.util.UriUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
@@ -20,11 +21,11 @@ public class BookingController {
 
     @PostMapping("/{screeningId}/bookings")
     public ResponseEntity<Void> createBooking(
-            Long userId,
+            @AuthenticationPrincipal User user,
             @PathVariable Long screeningId,
             @RequestBody @Valid BookingCreateRequest request
     ) {
-        final Long bookingId = bookingService.registration(userId, screeningId, request);
+        final Long bookingId = bookingService.registration(user.getUserId(), screeningId, request);
 
         final URI uri = UriUtil.create("/api/movies/screening/bookings/{bookingId}", bookingId);
 
@@ -33,10 +34,10 @@ public class BookingController {
 
     @DeleteMapping("/bookings/{bookingId}")
     public ResponseEntity<Void> deleteBooking(
-            Long userId,
+            @AuthenticationPrincipal User user,
             @PathVariable Long bookingId
     ) {
-        bookingService.cancellation(userId, bookingId);
+        bookingService.cancellation(user.getUserId(), bookingId);
 
         return ResponseEntity.noContent().build();
     }
