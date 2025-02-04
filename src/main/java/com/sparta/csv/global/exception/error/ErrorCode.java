@@ -20,6 +20,7 @@ public enum ErrorCode {
     ALREADY_EXIST_BOOKED_SEAT(HttpStatus.CONFLICT, "이미 예약된 좌석입니다"),
 
     // 좌석 관련 익셉션
+    SEAT_NOT_IN_THEATER(HttpStatus.BAD_REQUEST, "선택한 좌석이 해당 상영관에 존재하지 않습니다."),
     SEAT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 좌석을 찾을 수 없습니다.");
 
     private final HttpStatus status;

@@ -3,11 +3,13 @@ package com.sparta.csv.domain.booking.service;
 import com.sparta.csv.domain.booking.dto.request.BookingCreateRequest;
 import com.sparta.csv.domain.booking.entity.BookedSeat;
 import com.sparta.csv.domain.booking.entity.Booking;
+import com.sparta.csv.domain.booking.exception.SeatNotInTheaterException;
 import com.sparta.csv.domain.booking.repository.BookingRepository;
 import com.sparta.csv.domain.screening.entity.Screening;
 import com.sparta.csv.domain.screening.service.ScreeningService;
 import com.sparta.csv.domain.seat.entity.Seat;
 import com.sparta.csv.domain.seat.service.SeatService;
+import com.sparta.csv.domain.theater.entity.Theater;
 import com.sparta.csv.domain.user.entity.User;
 import com.sparta.csv.domain.user.service.UserService;
 import com.sparta.csv.global.exception.NotFoundException;
@@ -39,9 +41,15 @@ public class BookingService {
                 .user(user)
                 .build();
 
+        Theater theater = screening.getTheater();
+
         List<BookedSeat> bookedSeats = request.seatIds().stream()
                 .map(seatId -> {
                     Seat seat = seatService.findSeatById(seatId);
+
+                    if (!seat.getTheater().equals(theater)) {
+                        throw new SeatNotInTheaterException(ErrorCode.SEAT_NOT_IN_THEATER);
+                    }
 
                     bookedSeatService.existsByBookingAndSeat(booking, seat);
 
