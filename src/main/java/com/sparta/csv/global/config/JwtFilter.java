@@ -1,13 +1,12 @@
 package com.sparta.csv.global.config;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
+import com.sparta.csv.domain.common.entity.AuthUser;
 import com.sparta.csv.domain.user.enums.UserRole;
 
 import io.jsonwebtoken.Claims;
@@ -73,9 +72,14 @@ public class JwtFilter implements Filter {
 			httpRequest.setAttribute("email", claims.get("email"));
 			httpRequest.setAttribute("userRole", claims.get("userRole"));
 
-			User user = new User(String.valueOf(claims.get("email")),"", List.of(userRole::getRole));
+			AuthUser authUser = new AuthUser(
+				Long.parseLong(claims.getSubject()),
+				String.valueOf(claims.get("email")),
+				String.valueOf(claims.get("nickname")),
+				userRole
+			);
 
-			SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities()));
+			SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(authUser, null, authUser.getAuthorities()));
 
 			chain.doFilter(request, response);
 		} catch (SecurityException | MalformedJwtException e) {
