@@ -1,6 +1,7 @@
 package com.sparta.csv.domain.user.controller;
 
-import org.springframework.http.HttpStatus;
+import java.net.URI;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +12,7 @@ import com.sparta.csv.domain.user.dto.request.SigninRequest;
 import com.sparta.csv.domain.user.dto.request.SignupRequest;
 import com.sparta.csv.domain.user.dto.response.SigninResponse;
 import com.sparta.csv.domain.user.service.AuthService;
+import com.sparta.csv.global.util.UriUtil;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,16 +24,17 @@ public class AuthController {
 
 	private final AuthService authService;
 
-	/* TODO Valid 관련 예외처리 추가 */
 	@PostMapping("/signup")
 	public ResponseEntity<Void> signup(@Valid @RequestBody SignupRequest signupRequest) {
 		authService.signup(signupRequest);
-		return new ResponseEntity<>(HttpStatus.CREATED);
+
+		final URI uri = UriUtil.createUri("/api/auth/login");
+
+		return ResponseEntity.created(uri).build();
 	}
 
 	@PostMapping("/signin")
 	public ResponseEntity<SigninResponse> signin(@Valid @RequestBody SigninRequest signinRequest) {
-		SigninResponse signinResponse = authService.signin(signinRequest);
-		return new ResponseEntity<>(signinResponse, HttpStatus.OK);
+		return ResponseEntity.ok(authService.signin(signinRequest));
 	}
 }

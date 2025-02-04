@@ -1,6 +1,5 @@
 package com.sparta.csv.domain.user.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,14 +25,13 @@ public class UserController {
 
 	@GetMapping("/{userId}")
 	public ResponseEntity<UserInfoResponse> getUser(@PathVariable Long userId) {
-		UserInfoResponse userInfoResponse = userService.getUser(userId);
-		return new ResponseEntity<>(userInfoResponse, HttpStatus.OK);
+		return ResponseEntity.ok(userService.getUser(userId));
 	}
 
 	@DeleteMapping("/{userId}")
 	public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
 		userService.deleteUser(userId);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return ResponseEntity.noContent().build();
 	}
 
 	@PatchMapping("/{userId}")
@@ -42,7 +40,7 @@ public class UserController {
 		@RequestBody UserInfoRequest userInfoRequest
 	) {
 		userService.updateUserById(userId, userInfoRequest);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return ResponseEntity.ok().build();
 	}
 
 	@PatchMapping("/{userId}/password")
@@ -51,6 +49,6 @@ public class UserController {
 		@RequestBody UserPasswordRequest userPasswordRequest
 	) {
 		userService.updateUserPasswordById(userId, userPasswordRequest);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return ResponseEntity.ok().build();
 	}
 }
