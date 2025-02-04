@@ -1,5 +1,6 @@
 package com.sparta.csv.domain.booking.entity;
 
+import com.sparta.csv.domain.common.entity.BaseEntity;
 import com.sparta.csv.domain.screening.entity.Screening;
 import com.sparta.csv.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -18,7 +19,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicInsert
-public class Booking {
+public class Booking extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,5 +55,9 @@ public class Booking {
         this.user = user;
         this.screening = screening;
         this.bookedSeats = bookedSeats;
+    }
+
+    public void cancel() {
+        this.status = BookingStatus.CANCEL;
     }
 }
