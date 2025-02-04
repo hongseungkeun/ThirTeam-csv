@@ -1,4 +1,4 @@
-package com.sparta.csv.domain.booking.entity;
+package com.sparta.csv.domain.booking.bookedSeat.entity;
 
 import jakarta.persistence.Embeddable;
 import lombok.*;

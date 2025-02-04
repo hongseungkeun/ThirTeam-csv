@@ -1,7 +1,8 @@
 package com.sparta.csv.domain.booking.service;
 
+import com.sparta.csv.domain.booking.bookedSeat.service.BookedSeatService;
 import com.sparta.csv.domain.booking.dto.request.BookingCreateRequest;
-import com.sparta.csv.domain.booking.entity.BookedSeat;
+import com.sparta.csv.domain.booking.bookedSeat.entity.BookedSeat;
 import com.sparta.csv.domain.booking.entity.Booking;
 import com.sparta.csv.domain.booking.exception.SeatNotInTheaterException;
 import com.sparta.csv.domain.booking.repository.BookingRepository;

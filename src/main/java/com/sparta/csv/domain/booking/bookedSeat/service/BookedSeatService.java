@@ -1,8 +1,8 @@
-package com.sparta.csv.domain.booking.service;
+package com.sparta.csv.domain.booking.bookedSeat.service;
 
 import com.sparta.csv.domain.booking.entity.Booking;
 import com.sparta.csv.domain.booking.exception.DuplicateResourceException;
-import com.sparta.csv.domain.booking.repository.BookedSeatRepository;
+import com.sparta.csv.domain.booking.bookedSeat.repository.BookedSeatRepository;
 import com.sparta.csv.domain.seat.entity.Seat;
 import com.sparta.csv.global.exception.error.ErrorCode;
 import lombok.RequiredArgsConstructor;

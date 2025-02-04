@@ -1,5 +1,6 @@
 package com.sparta.csv.domain.booking.entity;
 
+import com.sparta.csv.domain.booking.bookedSeat.entity.BookedSeat;
 import com.sparta.csv.domain.common.entity.BaseEntity;
 import com.sparta.csv.domain.screening.entity.Screening;
 import com.sparta.csv.domain.user.entity.User;

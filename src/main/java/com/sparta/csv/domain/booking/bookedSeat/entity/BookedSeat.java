@@ -1,5 +1,6 @@
-package com.sparta.csv.domain.booking.entity;
+package com.sparta.csv.domain.booking.bookedSeat.entity;
 
+import com.sparta.csv.domain.booking.entity.Booking;
 import com.sparta.csv.domain.seat.entity.Seat;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
