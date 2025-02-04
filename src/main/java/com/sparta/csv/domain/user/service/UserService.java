@@ -2,6 +2,7 @@ package com.sparta.csv.domain.user.service;
 
 import com.sparta.csv.global.exception.ForbiddenException;
 import com.sparta.csv.global.exception.error.ErrorCode;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,7 +27,20 @@ public class UserService {
 		return UserInfoResponse.from(user);
 	}
 
-	 public User findUserById(Long userId) {
+	public void deleteUser(Long userId) {
+		User user = findUserById(userId);
+
+		userRepository.delete(user);
+	}
+
+	public void updateUserById(Long userId, UserInfoRequest userInfoRequest) {
+		User user = findUserById(userId);
+
+		user.updateNickName(userInfoRequest.nickname());
+	}
+
+	/* 기타 메서드 */
+	public User findUserById(Long userId) {
 		User user = userRepository.findById(userId).orElseThrow(
 			() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "조회되는 회원 정보가 없습니다. id: " + userId)
 		);
@@ -45,22 +59,4 @@ public class UserService {
 			throw new ForbiddenException(ErrorCode.FORBIDDEN_USER_ACCESS);
 		}
 	}
-
-	public void deleteUser(Long userId) {
-		User user = userRepository.findById(userId).orElseThrow(
-			() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "조회되는 회원 정보가 없습니다. id: "+userId)
-		);
-
-		userRepository.delete(user);
-	}
-
-	public void updateUserById(Long userId, UserInfoRequest userInfoRequest) {
-		User user = userRepository.findById(userId).orElseThrow(
-			() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "조회되는 회원 정보가 없습니다. id: "+userId)
-		);
-
-		user.updateNickName(userInfoRequest.nickname());
-	}
-
-	/* Todo User 조회 메서드 따로 추출하기 */
 }
