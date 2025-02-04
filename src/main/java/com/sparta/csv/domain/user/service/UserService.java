@@ -64,17 +64,15 @@ public class UserService {
 
 	/* 기타 메서드 */
 	public User findUserById(Long userId) {
-		User user = userRepository.findById(userId).orElseThrow(
+		return userRepository.findById(userId).orElseThrow(
 			() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "조회되는 회원 정보가 없습니다. id: " + userId)
 		);
-		return user;
 	}
 
 	public User findUserByEmail(SigninRequest signinRequest) {
-		User user = userRepository.findByEmail(signinRequest.email()).orElseThrow(
+		return userRepository.findByEmail(signinRequest.email()).orElseThrow(
 			() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "가입되지 않은 유저입니다.")
 		);
-		return user;
 	}
 
 	public void checkUserAuthentication(Long userId, Long loginUserId) {
