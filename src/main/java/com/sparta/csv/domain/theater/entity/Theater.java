@@ -1,14 +1,16 @@
 package com.sparta.csv.domain.theater.entity;
 
+import com.sparta.csv.domain.movie.dto.request.CreateMovieRequest;
+import com.sparta.csv.domain.movie.entity.Movie;
+import com.sparta.csv.domain.theater.dto.request.TheaterCreateRequest;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "theaters")
 @Getter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Theater {
 
@@ -20,8 +22,13 @@ public class Theater {
     @Column(nullable = false, length = 10)
     private String name;
 
-    @Builder
     public Theater(String name) {
         this.name = name;
+    }
+
+    public static Theater newTheater(TheaterCreateRequest req) {
+        return Theater.builder()
+                .name(req.name())
+                .build();
     }
 }
