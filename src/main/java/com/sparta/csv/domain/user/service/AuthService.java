@@ -6,13 +6,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.sparta.csv.domain.user.dto.request.SigninRequest;
+import com.sparta.csv.global.config.BCrypUtil;
+import com.sparta.csv.global.config.JwtUtil;
 import com.sparta.csv.domain.user.dto.request.SignupRequest;
 import com.sparta.csv.domain.user.dto.response.SigninResponse;
 import com.sparta.csv.domain.user.entity.User;
 import com.sparta.csv.domain.user.enums.UserRole;
 import com.sparta.csv.domain.user.repository.UserRepository;
 
-import jakarta.security.auth.message.AuthException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthService {
 
 	private final UserRepository userRepository;
+	private final UserService userService;
 	private final JwtUtil jwtUtil;
 
 	@Transactional
@@ -40,9 +42,7 @@ public class AuthService {
 	}
 
 	public SigninResponse signin(@Valid SigninRequest signinRequest) {
-		User user = userRepository.findByEmail(signinRequest.email()).orElseThrow(
-			() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "가입되지 않은 유저입니다.")
-		);
+		User user = userService.findUserByEmail(signinRequest);
 
 		if (!BCrypUtil.matches(signinRequest.password(), user.getPassword())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 비밀번호입니다.");
