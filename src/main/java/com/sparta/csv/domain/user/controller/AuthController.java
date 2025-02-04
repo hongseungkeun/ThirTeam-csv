@@ -22,14 +22,15 @@ public class AuthController {
 
 	private final AuthService authService;
 
+	/* TODO Valid 관련 예외처리 추가 */
 	@PostMapping("/signup")
-	public ResponseEntity<Void> signup(@Valid @RequestBody SignupRequest signupRequest){
+	public ResponseEntity<Void> signup(@Valid @RequestBody SignupRequest signupRequest) {
 		authService.signup(signupRequest);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 	@PostMapping("/signin")
-	public ResponseEntity<SigninResponse> signin(@Valid @RequestBody SigninRequest signinRequest){
+	public ResponseEntity<SigninResponse> signin(@Valid @RequestBody SigninRequest signinRequest) {
 		SigninResponse signinResponse = authService.signin(signinRequest);
 		return new ResponseEntity<>(signinResponse, HttpStatus.OK);
 	}
