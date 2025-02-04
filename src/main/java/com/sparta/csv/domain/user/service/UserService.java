@@ -2,11 +2,13 @@ package com.sparta.csv.domain.user.service;
 
 import com.sparta.csv.global.exception.ForbiddenException;
 import com.sparta.csv.global.exception.error.ErrorCode;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.sparta.csv.domain.user.dto.request.SigninRequest;
+import com.sparta.csv.domain.user.dto.request.UserInfoRequest;
 import com.sparta.csv.domain.user.dto.response.UserInfoResponse;
 import com.sparta.csv.domain.user.entity.User;
 import com.sparta.csv.domain.user.repository.UserRepository;
@@ -25,15 +27,20 @@ public class UserService {
 		return UserInfoResponse.from(user);
 	}
 
-
 	public void deleteUser(Long userId) {
 		User user = findUserById(userId);
 
 		userRepository.delete(user);
 	}
 
+	public void updateUserById(Long userId, UserInfoRequest userInfoRequest) {
+		User user = findUserById(userId);
+
+		user.updateNickName(userInfoRequest.nickname());
+	}
+
 	/* 기타 메서드 */
-	 public User findUserById(Long userId) {
+	public User findUserById(Long userId) {
 		User user = userRepository.findById(userId).orElseThrow(
 			() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "조회되는 회원 정보가 없습니다. id: " + userId)
 		);
