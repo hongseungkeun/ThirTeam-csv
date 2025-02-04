@@ -25,6 +25,14 @@ public class UserService {
 		return UserInfoResponse.from(user);
 	}
 
+
+	public void deleteUser(Long userId) {
+		User user = findUserById(userId);
+
+		userRepository.delete(user);
+	}
+
+	/* 기타 메서드 */
 	 public User findUserById(Long userId) {
 		User user = userRepository.findById(userId).orElseThrow(
 			() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "조회되는 회원 정보가 없습니다. id: " + userId)
@@ -43,13 +51,5 @@ public class UserService {
 		if (userId.equals(loginUserId)) {
 			throw new ForbiddenException(ErrorCode.FORBIDDEN_USER_ACCESS);
 		}
-	}
-
-	public void deleteUser(Long userId) {
-		User user = userRepository.findById(userId).orElseThrow(
-			() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "조회되는 회원 정보가 없습니다. id: "+userId)
-		);
-
-		userRepository.delete(user);
 	}
 }
