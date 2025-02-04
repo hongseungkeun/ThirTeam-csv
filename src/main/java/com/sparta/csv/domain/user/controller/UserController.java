@@ -2,6 +2,7 @@ package com.sparta.csv.domain.user.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,5 +24,11 @@ public class UserController {
 	public ResponseEntity<UserInfoResponse> getUser(@PathVariable Long userId){
 		UserInfoResponse userInfoResponse = userService.getUser(userId);
 		return new ResponseEntity<>(userInfoResponse, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/{userId}")
+	public ResponseEntity<Void> deleteUser(@PathVariable Long userId){
+		userService.deleteUser(userId);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
