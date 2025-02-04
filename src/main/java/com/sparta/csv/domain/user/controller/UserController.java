@@ -25,13 +25,13 @@ public class UserController {
 	private final UserService userService;
 
 	@GetMapping("/{userId}")
-	public ResponseEntity<UserInfoResponse> getUser(@PathVariable Long userId){
+	public ResponseEntity<UserInfoResponse> getUser(@PathVariable Long userId) {
 		UserInfoResponse userInfoResponse = userService.getUser(userId);
 		return new ResponseEntity<>(userInfoResponse, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{userId}")
-	public ResponseEntity<Void> deleteUser(@PathVariable Long userId){
+	public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
 		userService.deleteUser(userId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
@@ -40,7 +40,7 @@ public class UserController {
 	public ResponseEntity<Void> updateUserInfo(
 		@PathVariable Long userId,
 		@RequestBody UserInfoRequest userInfoRequest
-	){
+	) {
 		userService.updateUserById(userId, userInfoRequest);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -49,7 +49,7 @@ public class UserController {
 	public ResponseEntity<Void> updateUserPassword(
 		@PathVariable Long userId,
 		@RequestBody UserPasswordRequest userPasswordRequest
-	){
+	) {
 		userService.updateUserPasswordById(userId, userPasswordRequest);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
