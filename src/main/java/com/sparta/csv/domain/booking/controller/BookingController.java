@@ -2,7 +2,7 @@ package com.sparta.csv.domain.booking.controller;
 
 import com.sparta.csv.domain.booking.dto.request.BookingCreateRequest;
 import com.sparta.csv.domain.booking.service.BookingService;
-import com.sparta.csv.domain.user.entity.User;
+import com.sparta.csv.domain.common.entity.AuthUser;
 import com.sparta.csv.global.util.UriUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class BookingController {
 
     @PostMapping("/{screeningId}/bookings")
     public ResponseEntity<Void> createBooking(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal AuthUser user,
             @PathVariable Long screeningId,
             @RequestBody @Valid BookingCreateRequest request
     ) {
@@ -34,7 +34,7 @@ public class BookingController {
 
     @DeleteMapping("/bookings/{bookingId}")
     public ResponseEntity<Void> deleteBooking(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal AuthUser user,
             @PathVariable Long bookingId
     ) {
         bookingService.cancellation(user.getUserId(), bookingId);
