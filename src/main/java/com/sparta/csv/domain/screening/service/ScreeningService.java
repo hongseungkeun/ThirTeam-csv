@@ -26,8 +26,9 @@ public class ScreeningService {
     public ScreeningResponse createScreening(Long movieId, ScreeningRequest req) {
         Movie movie = movieService.getMovieById(movieId);
         Theater theater = theaterService.findTheaterById(req.theaterId());
+        int seats = theater.getSeats().size();
 
-        Screening screening = newScreening(movie, theater, req.screeningTime());
+        Screening screening = newScreening(movie, theater, req.screeningTime(), seats);
         Screening saved = screeningRepository.save(screening);
 
         return ScreeningResponse.from(saved);

@@ -22,7 +22,8 @@ public enum ErrorCode {
 
     // 좌석 관련 익셉션
     SEAT_NOT_IN_THEATER(HttpStatus.BAD_REQUEST, "선택한 좌석이 해당 상영관에 존재하지 않습니다."),
-    SEAT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 좌석을 찾을 수 없습니다.");
+    SEAT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 좌석을 찾을 수 없습니다."),
+    SEAT_NOT_REMAIN(HttpStatus.BAD_REQUEST, "남은 좌석이 없습니다.");
 
     private final HttpStatus status;
     private final String message;

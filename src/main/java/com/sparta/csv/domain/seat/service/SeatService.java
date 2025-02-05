@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -18,5 +20,9 @@ public class SeatService {
     public Seat findSeatById(Long seatId) {
         return seatRepository.findById(seatId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.SEAT_NOT_FOUND));
+    }
+
+    public List<Seat> findAllSeats() {
+        return seatRepository.findAll();
     }
 }

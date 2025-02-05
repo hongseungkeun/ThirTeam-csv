@@ -8,11 +8,13 @@ import java.time.LocalDateTime;
 @Builder
 public record ScreeningResponse(
         Long theaterId,
-        LocalDateTime screeningTime) {
+        LocalDateTime screeningTime,
+        int remainingSeats) {
     public static ScreeningResponse from(Screening screening) {
         return ScreeningResponse.builder()
                 .theaterId(screening.getScreeningId())
                 .screeningTime(screening.getShowTime())
+                .remainingSeats(screening.getRemainingSeats())
                 .build();
     }
 }
