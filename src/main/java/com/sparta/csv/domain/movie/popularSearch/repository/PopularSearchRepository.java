@@ -6,4 +6,5 @@ import java.util.Map;
 
 public interface PopularSearchRepository {
     void incrementCount(String search);
+    Map<String, Long> findAll();
 }
