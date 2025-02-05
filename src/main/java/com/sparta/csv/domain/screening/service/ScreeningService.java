@@ -10,6 +10,7 @@ import com.sparta.csv.domain.theater.entity.Theater;
 import com.sparta.csv.domain.theater.service.TheaterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,6 +24,7 @@ public class ScreeningService {
     private final TheaterService theaterService;
     private final MovieService movieService;
 
+    @Transactional
     public ScreeningResponse createScreening(Long movieId, ScreeningRequest req) {
         Movie movie = movieService.getMovieById(movieId);
         Theater theater = theaterService.findTheaterById(req.theaterId());

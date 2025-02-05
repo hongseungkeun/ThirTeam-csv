@@ -1,9 +1,9 @@
 package com.sparta.csv.domain.booking.service;
 
-import com.sparta.csv.domain.booking.bookedSeat.service.BookedSeatService;
-import com.sparta.csv.domain.booking.dto.request.BookingCreateRequest;
 import com.sparta.csv.domain.booking.bookedSeat.entity.BookedSeat;
+import com.sparta.csv.domain.booking.dto.request.BookingCreateRequest;
 import com.sparta.csv.domain.booking.entity.Booking;
+import com.sparta.csv.domain.booking.exception.DuplicateResourceException;
 import com.sparta.csv.domain.booking.exception.SeatNotInTheaterException;
 import com.sparta.csv.domain.booking.repository.BookingRepository;
 import com.sparta.csv.domain.screening.entity.Screening;
@@ -29,7 +29,6 @@ public class BookingService {
     private final UserService userService;
     private final ScreeningService screeningService;
     private final SeatService seatService;
-    private final BookedSeatService bookedSeatService;
     private final BookingRepository bookingRepository;
 
     @Transactional
@@ -44,26 +43,35 @@ public class BookingService {
 
         Theater theater = screening.getTheater();
 
-        List<BookedSeat> bookedSeats = request.seatIds().stream()
-                .map(seatId -> {
-                    Seat seat = seatService.findSeatById(seatId);
+        List<Seat> seats = seatService.findAllSeatsById(request.seatIds());
 
-                    if (!seat.getTheater().equals(theater)) {
-                        throw new SeatNotInTheaterException(ErrorCode.SEAT_NOT_IN_THEATER);
-                    }
+        if (seats.size() != request.seatIds().size()) {
+            throw new NotFoundException(ErrorCode.SEAT_NOT_FOUND);
+        }
 
-                    bookedSeatService.existsByBookingAndSeat(booking, seat);
+        seats.forEach(seat -> {
+            if (!seat.getTheater().equals(theater)) {
+                throw new SeatNotInTheaterException(ErrorCode.SEAT_NOT_IN_THEATER);
+            }
+        });
 
-                    return BookedSeat.builder()
-                            .booking(booking)
-                            .seat(seat)
-                            .build();
-                })
-                .toList();
-
-        booking.getBookedSeats().addAll(bookedSeats);
+        if (bookingRepository.existsByScreeningAndBookedSeatsSeat(screening, seats)) {
+            throw new DuplicateResourceException(ErrorCode.ALREADY_EXIST_BOOKED_SEAT);
+        }
 
         Booking savedBooking = bookingRepository.save(booking);
+
+        List<BookedSeat> bookedSeats = seats.stream()
+                .map(seat -> BookedSeat.builder()
+                        .booking(savedBooking)
+                        .seat(seat)
+                        .build()
+                )
+                .toList();
+        booking.getBookedSeats().addAll(bookedSeats);
+
+        screening.decreaseRemainingSeats(savedBooking.getBookedSeats().size());
+
         return savedBooking.getId();
     }
 
@@ -74,11 +82,7 @@ public class BookingService {
         userService.checkUserAuthentication(booking.getUser().getUserId(), userId);
 
         booking.cancel();
-    }
-
-    public Booking findBookingById(Long bookingId) {
-        return bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.BOOKING_NOT_FOUND));
+        booking.getScreening().increaseRemainingSeats(booking.getBookedSeats().size());
     }
 
     private Booking findBookingByIdAndStatusIsCompleted(Long bookingId) {

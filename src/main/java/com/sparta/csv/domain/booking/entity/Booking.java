@@ -41,7 +41,7 @@ public class Booking extends BaseEntity {
     private Screening screening;
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BookedSeat> bookedSeats = new ArrayList<>();
+    private List<BookedSeat> bookedSeats;
 
     @Builder
     public Booking(
@@ -55,7 +55,7 @@ public class Booking extends BaseEntity {
         this.status = status;
         this.user = user;
         this.screening = screening;
-        this.bookedSeats = bookedSeats;
+        this.bookedSeats = bookedSeats != null ? bookedSeats : new ArrayList<>();
     }
 
     public void cancel() {
