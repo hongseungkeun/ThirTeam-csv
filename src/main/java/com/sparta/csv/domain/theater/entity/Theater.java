@@ -27,7 +27,6 @@ public class Theater {
     private String name;
 
     @OneToMany(mappedBy = "theater")
-    @JoinColumn(name = "theater_id")
     private List<Seat> seats = new ArrayList<>();
 
     public Theater(String name) {
