@@ -28,10 +28,10 @@ public class BookedSeat {
     private Seat seat;
 
     @Builder
-    public BookedSeat(BookedSeatId id, Booking booking, Seat seat) {
-        this.id = id;
+    public BookedSeat(Booking booking, Seat seat) {
         this.booking = booking;
         this.seat = seat;
+        this.id = BookedSeatId.builder().bookingId(booking.getId()).seatId(seat.getId()).build();
     }
 }
 
