@@ -2,6 +2,8 @@ package com.sparta.csv.domain.screening.entity;
 
 import com.sparta.csv.domain.movie.entity.Movie;
 import com.sparta.csv.domain.theater.entity.Theater;
+import com.sparta.csv.global.exception.BadRequestException;
+import com.sparta.csv.global.exception.error.ErrorCode;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,11 +32,26 @@ public class Screening {
     @Column(nullable = false)
     private LocalDateTime showTime;
 
-    public static Screening newScreening(Movie movie, Theater theater, LocalDateTime showTime) {
+    @Column(nullable = false)
+    private int remainingSeats;
+
+    public static Screening newScreening(Movie movie, Theater theater, LocalDateTime showTime, int remainingSeats) {
         return Screening.builder()
                 .movie(movie)
                 .theater(theater)
                 .showTime(showTime)
+                .remainingSeats(remainingSeats)
                 .build();
+    }
+
+    public void decreaseRemainingSeats(int bookedSeatCount) {
+        if (this.remainingSeats - bookedSeatCount < 0) {
+            throw new BadRequestException(ErrorCode.SEAT_NOT_REMAIN);
+        }
+        this.remainingSeats =- bookedSeatCount;
+    }
+
+    public void increaseRemainingSeats(int bookedSeatCount) {
+        this.remainingSeats += bookedSeatCount;
     }
 }
