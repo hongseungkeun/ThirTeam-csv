@@ -28,7 +28,7 @@ public class MovieService {
     }
 
     public Page<MovieResponse> findAllMovies(String title, Pageable pageable) {
-        if (title != null) {
+        if (title != null && !title.isEmpty()) {
             popularSearchService.incrementSearchCount(title);
         }
         Page<Movie> movies = movieRepository.findAllByTitle(title, pageable);
