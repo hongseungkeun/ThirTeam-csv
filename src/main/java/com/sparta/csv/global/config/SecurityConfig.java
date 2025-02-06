@@ -35,7 +35,7 @@ public class SecurityConfig {
 			.formLogin(AbstractHttpConfigurer::disable)
 			.addFilterBefore(jwtFilter, SecurityContextHolderAwareRequestFilter.class)
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/api/auth/**").permitAll()
+				.requestMatchers("/api/auth/**","/api/movies").permitAll()
 				.requestMatchers("/api/admin/**").hasRole("ADMIN")
 				.requestMatchers("/api/users/**", "/api/movies/**", "/api/movies").hasRole("USER")
 				.anyRequest().authenticated()
