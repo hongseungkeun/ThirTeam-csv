@@ -16,11 +16,10 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "AND b.status = 'COMPLETE'")
     Optional<Booking> findByIdAndStatusIsCompleted(Long bookingId);
 
-    @Query("SELECT COUNT(b) > 0 FROM Booking b " +
+    @Query("SELECT EXISTS (SELECT b.id FROM Booking b " +
             "JOIN b.bookedSeats bs " +
-            "JOIN bs.seat s " +
             "WHERE b.screening = :screening " +
-            "AND s IN :seats " +
-            "AND b.status = 'COMPLETE'")
+            "AND bs.seat IN :seats " +
+            "AND b.status = 'COMPLETE')")
     boolean existsByScreeningAndBookedSeatsSeat(Screening screening, List<Seat> seats);
 }
