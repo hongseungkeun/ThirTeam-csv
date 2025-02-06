@@ -3,6 +3,7 @@ package com.sparta.csv.domain.booking.controller;
 import com.sparta.csv.domain.booking.dto.request.BookingCreateRequest;
 import com.sparta.csv.domain.booking.dto.response.TopBookMovie;
 import com.sparta.csv.domain.booking.service.BookingService;
+import com.sparta.csv.domain.booking.service.RedisPopularMoviesService;
 import com.sparta.csv.domain.common.entity.AuthUser;
 import com.sparta.csv.global.util.UriUtil;
 import jakarta.validation.Valid;
@@ -20,6 +21,7 @@ import java.util.List;
 public class BookingController {
 
     private final BookingService bookingService;
+    private final RedisPopularMoviesService redisPopularMoviesService;
 
     @PostMapping("/{screeningId}/bookings")
     public ResponseEntity<Void> createBooking(
@@ -45,7 +47,12 @@ public class BookingController {
     }
 
     @GetMapping("/bookings/popular-movies")
-    public List<TopBookMovie> getPopularMovies() {
-        return bookingService.getPopularMovies();
+    public ResponseEntity<List<TopBookMovie>> getPopularMovies() {
+        return ResponseEntity.ok(bookingService.getPopularMovies());
+    }
+
+    @GetMapping("/bookings/popular-movies/v2")
+    public ResponseEntity<List<TopBookMovie>> getPopularMoviesV2() {
+        return ResponseEntity.ok(redisPopularMoviesService.getPopularMovies());
     }
 }
