@@ -45,6 +45,6 @@ public class ScreeningService {
     }
 
     public Screening findScreeningById(Long id) {
-        return screeningRepository.findById(id).orElseThrow();
+        return screeningRepository.findByScreeningId(id).orElseThrow();
     }
 }

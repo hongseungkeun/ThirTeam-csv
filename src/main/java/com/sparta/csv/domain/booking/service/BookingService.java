@@ -1,16 +1,10 @@
 package com.sparta.csv.domain.booking.service;
 
-import com.sparta.csv.domain.booking.bookedSeat.entity.BookedSeat;
 import com.sparta.csv.domain.booking.dto.request.BookingCreateRequest;
 import com.sparta.csv.domain.booking.entity.Booking;
-import com.sparta.csv.domain.booking.exception.DuplicateResourceException;
-import com.sparta.csv.domain.booking.exception.SeatNotInTheaterException;
 import com.sparta.csv.domain.booking.repository.BookingRepository;
-import com.sparta.csv.domain.screening.entity.Screening;
-import com.sparta.csv.domain.screening.service.ScreeningService;
-import com.sparta.csv.domain.seat.entity.Seat;
-import com.sparta.csv.domain.seat.service.SeatService;
-import com.sparta.csv.domain.theater.entity.Theater;
+import com.sparta.csv.domain.lock.exception.DistributedLockException;
+import com.sparta.csv.domain.lock.service.LettuceLockService;
 import com.sparta.csv.domain.user.entity.User;
 import com.sparta.csv.domain.user.service.UserService;
 import com.sparta.csv.global.exception.NotFoundException;
@@ -19,60 +13,30 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class BookingService {
 
     private final UserService userService;
-    private final ScreeningService screeningService;
-    private final SeatService seatService;
+    private final LettuceLockService lettuceLockService;
+    private final BookingRegisterService bookingRegisterService;
     private final BookingRepository bookingRepository;
 
-    @Transactional
-    public Long registration(Long userId, Long screeningId, BookingCreateRequest request) {
+    public Long createBooking(Long userId, Long screeningId, BookingCreateRequest request) {
         User user = userService.findUserById(userId);
-        Screening screening = screeningService.findScreeningById(screeningId);
 
-        Booking booking = Booking.builder()
-                .screening(screening)
-                .user(user)
-                .build();
+        String lockKey = "screening:" + screeningId;
 
-        Theater theater = screening.getTheater();
-
-        List<Seat> seats = seatService.findAllSeatsById(request.seatIds());
-
-        if (seats.size() != request.seatIds().size()) {
-            throw new NotFoundException(ErrorCode.SEAT_NOT_FOUND);
+        boolean lock = lettuceLockService.lock(lockKey);
+        if (!lock) {
+            throw new DistributedLockException(ErrorCode.LOCK_ACQUISITION_FAILED);
         }
 
-        seats.forEach(seat -> {
-            if (!seat.getTheater().equals(theater)) {
-                throw new SeatNotInTheaterException(ErrorCode.SEAT_NOT_IN_THEATER);
-            }
-        });
-
-        if (bookingRepository.existsByScreeningAndBookedSeatsSeat(screening, seats)) {
-            throw new DuplicateResourceException(ErrorCode.ALREADY_EXIST_BOOKED_SEAT);
+        try {
+            return bookingRegisterService.registration(request.seatIds(), screeningId, user);
+        } finally {
+            lettuceLockService.unlock(lockKey);
         }
-
-        Booking savedBooking = bookingRepository.save(booking);
-
-        List<BookedSeat> bookedSeats = seats.stream()
-                .map(seat -> BookedSeat.builder()
-                        .booking(savedBooking)
-                        .seat(seat)
-                        .build()
-                )
-                .toList();
-        booking.getBookedSeats().addAll(bookedSeats);
-
-        screening.decreaseRemainingSeats(savedBooking.getBookedSeats().size());
-
-        return savedBooking.getId();
     }
 
     @Transactional

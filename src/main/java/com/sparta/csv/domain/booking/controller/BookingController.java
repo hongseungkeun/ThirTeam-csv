@@ -25,7 +25,7 @@ public class BookingController {
             @PathVariable Long screeningId,
             @RequestBody @Valid BookingCreateRequest request
     ) {
-        final Long bookingId = bookingService.registration(user.getUserId(), screeningId, request);
+        final Long bookingId = bookingService.createBooking(user.getUserId(), screeningId, request);
 
         final URI uri = UriUtil.create("/api/movies/screening/bookings/{bookingId}", bookingId);
 
