@@ -1,5 +1,6 @@
 package com.sparta.csv.domain.booking.repository;
 
+import com.sparta.csv.domain.booking.dto.response.TopBookMovie;
 import com.sparta.csv.domain.booking.entity.Booking;
 import com.sparta.csv.domain.screening.entity.Screening;
 import com.sparta.csv.domain.seat.entity.Seat;
@@ -23,4 +24,10 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "AND s IN :seats " +
             "AND b.status = 'COMPLETE'")
     boolean existsByScreeningAndBookedSeatsSeat(Screening screening, List<Seat> seats);
+
+    @Query("SELECT b.screening.movie.title, COUNT(b.id) " +
+            "FROM Booking b " +
+            "GROUP BY b.screening.movie " +
+            "ORDER BY COUNT(b.id) DESC")
+    List<Object[]> findPopularMovies();
 }
