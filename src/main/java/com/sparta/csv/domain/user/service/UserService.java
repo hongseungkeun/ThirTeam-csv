@@ -74,7 +74,7 @@ public class UserService {
 	}
 
 	public void checkUserAuthentication(Long userId, Long loginUserId) {
-		if (userId.equals(loginUserId)) {
+		if (!userId.equals(loginUserId)) {
 			throw new ForbiddenException(ErrorCode.FORBIDDEN_USER_ACCESS);
 		}
 	}
