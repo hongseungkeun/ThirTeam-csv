@@ -22,4 +22,10 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "AND bs.seat IN :seats " +
             "AND b.status = 'COMPLETE')")
     boolean existsByScreeningAndBookedSeatsSeat(Screening screening, List<Seat> seats);
+
+    @Query("SELECT b.screening.movie.title, COUNT(b.id) " +
+            "FROM Booking b " +
+            "GROUP BY b.screening.movie " +
+            "ORDER BY COUNT(b.id) DESC")
+    List<Object[]> findPopularMovies();
 }

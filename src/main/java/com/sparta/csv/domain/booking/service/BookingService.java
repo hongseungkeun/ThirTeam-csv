@@ -1,6 +1,7 @@
 package com.sparta.csv.domain.booking.service;
 
 import com.sparta.csv.domain.booking.dto.request.BookingCreateRequest;
+import com.sparta.csv.domain.booking.dto.response.TopBookMovie;
 import com.sparta.csv.domain.booking.entity.Booking;
 import com.sparta.csv.domain.booking.repository.BookingRepository;
 import com.sparta.csv.domain.lock.exception.DistributedLockException;
@@ -12,6 +13,9 @@ import com.sparta.csv.global.exception.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -52,5 +56,16 @@ public class BookingService {
     private Booking findBookingByIdAndStatusIsCompleted(Long bookingId) {
         return bookingRepository.findByIdAndStatusIsCompleted(bookingId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.BOOKING_NOT_AVAILABLE));
+    }
+
+    public List<TopBookMovie> getPopularMovies() {
+        List<Object[]> result = bookingRepository.findPopularMovies();
+        return IntStream.range(0, result.size())
+                .mapToObj(i -> new TopBookMovie(
+                        i + 1,
+                        (String) result.get(i)[0],
+                        (Long) result.get(i)[1]
+                ))
+                .toList();
     }
 }
