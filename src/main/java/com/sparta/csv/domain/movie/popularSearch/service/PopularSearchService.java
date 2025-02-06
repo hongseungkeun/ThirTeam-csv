@@ -18,7 +18,6 @@ public class PopularSearchService {
     public void incrementSearchCount(String search) {
         popularSearchRepository.incrementCount(search);
     }
-
     public List<PopularSearchResponse> getPopularSearches() {
         Map<String, Long> searchCountMap = popularSearchRepository.findAll();
 
