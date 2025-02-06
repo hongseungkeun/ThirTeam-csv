@@ -5,7 +5,7 @@ import com.sparta.csv.domain.booking.dto.response.TopBookMovie;
 import com.sparta.csv.domain.booking.entity.Booking;
 import com.sparta.csv.domain.booking.repository.BookingRepository;
 import com.sparta.csv.domain.lock.exception.DistributedLockException;
-import com.sparta.csv.domain.lock.service.LettuceLockService;
+import com.sparta.csv.domain.lock.service.LockService;
 import com.sparta.csv.domain.user.entity.User;
 import com.sparta.csv.domain.user.service.UserService;
 import com.sparta.csv.global.exception.NotFoundException;
@@ -22,7 +22,7 @@ import java.util.stream.IntStream;
 public class BookingService {
 
     private final UserService userService;
-    private final LettuceLockService lettuceLockService;
+    private final LockService lockService;
     private final BookingRegisterService bookingRegisterService;
     private final BookingRepository bookingRepository;
 
@@ -31,7 +31,7 @@ public class BookingService {
 
         String lockKey = "screening:" + screeningId;
 
-        boolean lock = lettuceLockService.lock(lockKey);
+        boolean lock = lockService.lock(lockKey);
         if (!lock) {
             throw new DistributedLockException(ErrorCode.LOCK_ACQUISITION_FAILED);
         }
@@ -39,7 +39,7 @@ public class BookingService {
         try {
             return bookingRegisterService.registration(request.seatIds(), screeningId, user);
         } finally {
-            lettuceLockService.unlock(lockKey);
+            lockService.unlock(lockKey);
         }
     }
 
