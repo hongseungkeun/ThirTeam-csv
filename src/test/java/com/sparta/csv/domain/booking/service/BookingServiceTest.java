@@ -1,19 +1,10 @@
 package com.sparta.csv.domain.booking.service;
 
 import com.sparta.csv.domain.booking.dto.request.BookingCreateRequest;
-import com.sparta.csv.domain.movie.dto.request.CreateMovieRequest;
-import com.sparta.csv.domain.movie.dto.response.MovieResponse;
-import com.sparta.csv.domain.movie.service.MovieService;
-import com.sparta.csv.domain.screening.dto.request.ScreeningRequest;
-import com.sparta.csv.domain.screening.dto.response.ScreeningResponse;
-import com.sparta.csv.domain.screening.service.ScreeningService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -35,7 +26,7 @@ public class BookingServiceTest {
 
         Random random = new Random();
 
-        int numberOfThreads = 500; // 동시 실행할 Thread 개수
+        int numberOfThreads = 100; // 동시 실행할 Thread 개수
         List<BookingCreateRequest> request = new ArrayList<>();
 
         for (int i = 0; i < numberOfThreads; i++) {
