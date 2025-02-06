@@ -48,7 +48,7 @@ public class Screening {
         if (this.remainingSeats - bookedSeatCount < 0) {
             throw new BadRequestException(ErrorCode.SEAT_NOT_REMAIN);
         }
-        this.remainingSeats =- bookedSeatCount;
+        this.remainingSeats -= bookedSeatCount;
     }
 
     public void increaseRemainingSeats(int bookedSeatCount) {

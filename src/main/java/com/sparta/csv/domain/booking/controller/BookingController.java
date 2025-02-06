@@ -1,16 +1,19 @@
 package com.sparta.csv.domain.booking.controller;
 
 import com.sparta.csv.domain.booking.dto.request.BookingCreateRequest;
+import com.sparta.csv.domain.booking.dto.response.TopBookMovie;
 import com.sparta.csv.domain.booking.service.BookingService;
 import com.sparta.csv.domain.common.entity.AuthUser;
 import com.sparta.csv.global.util.UriUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/movies/screening")
@@ -40,5 +43,10 @@ public class BookingController {
         bookingService.cancellation(user.getUserId(), bookingId);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/bookings/popular-movies")
+    public List<TopBookMovie> getPopularMovies() {
+        return bookingService.getPopularMovies();
     }
 }
