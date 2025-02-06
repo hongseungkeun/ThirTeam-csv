@@ -4,24 +4,27 @@ import com.sparta.csv.domain.lock.exception.DistributedLockException;
 import com.sparta.csv.domain.lock.repository.LettuceLockRepository;
 import com.sparta.csv.global.exception.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class LettuceLockService {
+@ConditionalOnProperty(name = "lock.type", havingValue = "lettuce", matchIfMissing = true)
+@Slf4j
+public class LettuceLockService implements LockService {
 
     private final LettuceLockRepository lettuceLockRepository;
 
-    private static final long WAIT_TIME = 6L;
-    private static final long LEASE_TIME = 5L;
-
     public boolean lock(String key) {
+        log.info("lockType: Lettuce");
+
         long startTime = System.currentTimeMillis();
 
         try {
             while (System.currentTimeMillis() - startTime < WAIT_TIME * 1000) {
                 // setnx 명령어 사용 - key(key) value("lock")
-                if (lettuceLockRepository.tryLock(key, LEASE_TIME)) {
+                if (lettuceLockRepository.tryLock(LOCK_PREFIX + key, LEASE_TIME)) {
                     return true;
                 }
 
@@ -35,6 +38,6 @@ public class LettuceLockService {
     }
 
     public void unlock(String key) {
-        lettuceLockRepository.unlock(key);
+        lettuceLockRepository.unlock(LOCK_PREFIX + key);
     }
 }

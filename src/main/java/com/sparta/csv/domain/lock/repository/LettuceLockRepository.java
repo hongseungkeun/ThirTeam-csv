@@ -12,15 +12,14 @@ public class LettuceLockRepository {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    private static final String LOCK_PREFIX = "lock:";
     private static final String LOCK_VALUE = "locked";
 
     public Boolean tryLock(String key, long leaseTime) {
         return redisTemplate.opsForValue()
-                .setIfAbsent(LOCK_PREFIX + key, LOCK_VALUE, Duration.ofSeconds(leaseTime));
+                .setIfAbsent(key, LOCK_VALUE, Duration.ofSeconds(leaseTime));
     }
 
     public void unlock(String key) {
-        redisTemplate.delete(LOCK_PREFIX + key);
+        redisTemplate.delete(key);
     }
 }
