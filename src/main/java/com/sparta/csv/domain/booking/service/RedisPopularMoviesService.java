@@ -3,6 +3,8 @@ package com.sparta.csv.domain.booking.service;
 import com.sparta.csv.domain.booking.dto.response.TopBookMovie;
 import com.sparta.csv.domain.booking.repository.BookingRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -39,15 +41,30 @@ public class RedisPopularMoviesService {
         return movies;
     }
 
-    @Scheduled(fixedRate = 300000, initialDelay = 10000)
-    @Transactional
-    public void refreshTopBookedMovies() {
-        redisTemplate.delete(CACHE_KEY);
+    //    @Scheduled(fixedRate = 300000, initialDelay = 10000)
+//    @Transactional
+//    public void refreshTopBookedMovies() {
+//        redisTemplate.delete(CACHE_KEY);
+//        List<Object[]> result = bookingRepository.findPopularMovies();
+//        for (Object[] row : result) {
+//            String movieName = (String) row[0];
+//            Long bookingCount = (Long) row[1];
+//            redisTemplate.opsForZSet().add(CACHE_KEY, movieName, bookingCount);
+//        }
+//    }
+    @Cacheable(value = CACHE_KEY)
+    @Transactional(readOnly = true)
+    public List<TopBookMovie> getPopularMoviesV3() {
         List<Object[]> result = bookingRepository.findPopularMovies();
+
+        int rank = 1;
+        List<TopBookMovie> movies = new ArrayList<>();
         for (Object[] row : result) {
-            String movieName = (String) row[0];
+            String title = (String) row[0];
             Long bookingCount = (Long) row[1];
-            redisTemplate.opsForZSet().add(CACHE_KEY, movieName, bookingCount);
+            movies.add(new TopBookMovie(rank++, title, bookingCount));
         }
+        return movies;
     }
+
 }

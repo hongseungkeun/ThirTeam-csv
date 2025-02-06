@@ -55,4 +55,9 @@ public class BookingController {
     public ResponseEntity<List<TopBookMovie>> getPopularMoviesV2() {
         return ResponseEntity.ok(redisPopularMoviesService.getPopularMovies());
     }
+
+    @GetMapping("/bookings/popular-movies/v3")
+    public ResponseEntity<List<TopBookMovie>> getPopularMoviesV3() {
+        return ResponseEntity.ok(redisPopularMoviesService.getPopularMoviesV3());
+    }
 }
