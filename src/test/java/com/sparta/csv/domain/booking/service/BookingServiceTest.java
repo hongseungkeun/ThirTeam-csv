@@ -27,28 +27,6 @@ public class BookingServiceTest {
     @Autowired
     private BookingService bookingService;
 
-    @Autowired
-    private MovieService movieService;
-
-    @Autowired
-    private ScreeningService screeningService;
-
-    private Long screeningId;
-
-    @BeforeEach
-    void setUp() {
-        CreateMovieRequest createMovieRequest = new CreateMovieRequest(
-                "테스트 영화",
-                120,
-                LocalDate.of(2025, 1, 2),
-                "테스트 설명"
-        );
-        MovieResponse movie = movieService.createMovie(createMovieRequest);
-
-        ScreeningRequest screeningRequest = new ScreeningRequest(1L, LocalDateTime.of(2025, 1, 1, 14, 0));
-        ScreeningResponse screening = screeningService.createScreening(movie.id(), screeningRequest);
-    }
-
     @Test
     void 동시성_이슈를_검증할_수_있는_테스트_코드_작성() throws InterruptedException {
         // 예약을 테스트할 Screening, User 및 좌석 ID를 세팅함
