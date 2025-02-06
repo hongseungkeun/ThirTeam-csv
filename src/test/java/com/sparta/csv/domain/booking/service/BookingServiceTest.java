@@ -53,17 +53,9 @@ public class BookingServiceTest {
         // 예약을 테스트할 Screening, User 및 좌석 ID를 세팅함
         Long userId = 1L;
         Long screeningId = 1L;
-        List<Long> seatIds1 = List.of(1L, 2L); // 동일한 좌석 ID로 테스트
-        List<Long> seatIds2 = List.of(2L, 3L); // 동일한 좌석 ID로 테스트
-        List<Long> seatIds3 = List.of(3L, 1L); // 동일한 좌석 ID로 테스트
-        List<Long> seatIds4 = List.of(5L, 4L); // 동일한 좌석 ID로 테스트
-        List<Long> seatIds5 = List.of(4L, 2L); // 동일한 좌석 ID로 테스트
+        List<Long> seatIds = List.of(1L, 2L); // 동일한 좌석 ID로 테스트
 
-        BookingCreateRequest request1 = new BookingCreateRequest(seatIds1);
-        BookingCreateRequest request = new BookingCreateRequest(seatIds2);
-        BookingCreateRequest request = new BookingCreateRequest(seatIds3);
-        BookingCreateRequest request = new BookingCreateRequest(seatIds4);
-        BookingCreateRequest request = new BookingCreateRequest(seatIds5);
+        BookingCreateRequest request = new BookingCreateRequest(seatIds);
 
         // Thread 동시 실행을 위한 설정
         int numberOfThreads = 10; // 동시 실행할 Thread 개수
